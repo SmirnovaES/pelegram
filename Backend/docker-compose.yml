@@ -1,0 +1,52 @@
+version: "3.3"
+services:
+
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017    
+    # networks:
+    #   - product-network
+    # environment:
+    #   MONGO_INITDB_ROOT_USERNAME: user
+    #   MONGO_INITDB_ROOT_PASSWORD: pass
+      # MONGODB_DATABASE: "Messenger"
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    depends_on:
+      - mongo
+    # networks:
+    #   - product-network
+    # environment:
+    #   MONGODB_USER: user
+    #   MONGODB_PASS: pass
+
+  redis:
+    image: redis
+    restart: always
+    ports:
+      - 6379:6379
+    # networks:
+    #   - product-network
+
+  iplookup:
+    build: ./
+    restart: always
+    ports:
+      - 8123:80
+      - 50119:50119
+      - 5000:5000
+    depends_on:
+      - mongo
+      - redis
+#     networks:
+#       - product-network
+
+# networks:
+#     product-network:
+#         driver: bridge
